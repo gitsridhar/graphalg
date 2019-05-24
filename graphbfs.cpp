@@ -11,6 +11,8 @@ class Graph {
         Graph(int vertices);
         void addEdge(int v, int w);
         void BFS(int source);
+        void InitializeDFS(int v);
+        void DFS(int v, bool visited[]);
 };
 
 Graph::Graph(int vertices) {
@@ -50,6 +52,27 @@ void Graph::BFS(int source) {
     }
 }
 
+void Graph::DFS(int source, bool visited[]) {
+    visited[source] = true;
+    cout << source << " ";
+
+    list<int>::iterator i;
+    for(i = adjacencyList[source].begin(); i != adjacencyList[source].end(); ++i) {
+        if (!visited[*i]) {
+            DFS(*i, visited);
+        }
+    }
+}
+
+void Graph::InitializeDFS(int v) {
+    bool *visited = new bool[numberOfVertices];
+    for(int i=0; i < numberOfVertices; i++) {
+        visited[i] = false;
+    }
+
+    DFS(v, visited);
+}
+
 int main() {
     Graph g(4);
     g.addEdge(0, 1);
@@ -60,6 +83,8 @@ int main() {
     g.addEdge(3, 3);
 
     g.BFS(0);
+
+    g.InitializeDFS(0);
 
     return 0;
 }
